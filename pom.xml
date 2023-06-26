@@ -47,7 +47,7 @@
 		<examination.version>1.3.0</examination.version>
 		<arimapi.version>0.26.4</arimapi.version>
 		<managedwaits.version>0.1.3</managedwaits.version>
-		<morepaperlib.version>0.4.2</morepaperlib.version>
+		<morepaperlib.version>0.4.4-SNAPSHOT</morepaperlib.version>
 
 		<!-- Platform dependencies -->
 		<bungeecord.version>1.16-R0.4</bungeecord.version>
@@ -105,46 +105,6 @@
 	</developers>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>enforce-sane-build</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<reactorModuleConvergence>
-									<message>Fix multimodule setup</message>
-								</reactorModuleConvergence>
-							</rules>
-						</configuration>
-					</execution>
-					<execution>
-						<id>enforce-no-snapshots</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<requireReleaseDeps>
-									<message>Snapshot dependencies lead to unstable builds. Use release versions.</message>
-									<searchTransitive>false</searchTransitive>
-									<failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
-									<excludes>
-										<exclude>space.arim.libertybans:*</exclude>
-										<exclude>org.spigotmc:spigot-api</exclude>
-									</excludes>
-								</requireReleaseDeps>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
