@@ -408,6 +408,16 @@ public interface MessagesConfig {
 			Map<String, String> trackDisplayNames();
 
 		}
+
+		@ConfKey("silent-display")
+		@ConfComments({
+				"What should the value of the %SILENT% placeholder be?",
+				"This will be displayed for silent notifications if configured,",
+				"to signal other staff a punishment is silent.",
+		})
+		@DefaultString("(Silent) ")
+		String silentDisplay();
+
 	}
 	
 	@SubSection

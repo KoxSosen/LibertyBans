@@ -22,6 +22,7 @@ package space.arim.libertybans.core.config;
 import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import space.arim.api.jsonchat.adventure.util.ComponentText;
 import space.arim.libertybans.api.Victim;
 import space.arim.libertybans.api.event.BasePunishEvent;
 import space.arim.libertybans.api.punish.DraftSanction;
@@ -191,8 +192,11 @@ public final class AdditionAssistant {
 			CentralisedFuture<?> enforcement = punishment
 					.enforcePunishment(enforcementOptions)
 					.toCompletableFuture();
+
+			ComponentText successMessage = section.successMessage().replaceText("%TARGET%", targetArg);
+			if (notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
 			CentralisedFuture<Component> futureMessage = formatter.formatWithPunishment(
-					section.successMessage().replaceText("%TARGET%", targetArg), punishment);
+					successMessage, punishment);
 
 			return futuresFactory.allOf(enforcement, futureMessage).thenCompose((ignore) -> {
 				return fireEventWithTimeout.fire(new PostPunishEventImpl(punishment, targetArg));

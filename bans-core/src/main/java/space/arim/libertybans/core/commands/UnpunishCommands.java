@@ -21,6 +21,7 @@ package space.arim.libertybans.core.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import space.arim.api.jsonchat.adventure.util.ComponentText;
 import space.arim.libertybans.api.CompositeVictim;
 import space.arim.libertybans.api.PunishmentType;
 import space.arim.libertybans.api.Victim;
@@ -216,8 +217,11 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 			CentralisedFuture<?> unenforcement = punishment
 					.unenforcePunishment(enforcementOptions)
 					.toCompletableFuture();
+
+			ComponentText successMessage = section.successMessage().replaceText("%TARGET%", targetArg);
+			if (notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
 			CentralisedFuture<Component> futureMessage = formatter.formatWithPunishment(
-					section.successMessage().replaceText("%TARGET%", targetArg), punishment);
+					successMessage, punishment);
 
 			return futuresFactory().allOf(unenforcement, futureMessage).thenCompose((ignore) -> {
 				return fireWithTimeout(new PostPardonEventImpl(sender().getOperator(), punishment, targetArg));
