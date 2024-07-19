@@ -161,7 +161,6 @@ public class Formatter implements InternalFormatter {
 		TRACK,
 		TRACK_ID,
 		TRACK_NAMESPACE,
-		SILENT,
 		;
 
 		String getVariable() {
@@ -246,7 +245,6 @@ public class Formatter implements InternalFormatter {
 			simpleReplacements.put(SimpleReplaceable.TIME_REMAINING_SIMPLE, relativeEndFormattedSimple);
 			MessagesConfig.Formatting.PunishmentExpiredDisplay display = formatting.punishmentExpiredDisplay();
 			simpleReplacements.put(SimpleReplaceable.HAS_EXPIRED, (notExpired) ? display.notExpired() : display.expired());
-			simpleReplacements.put(SimpleReplaceable.SILENT, formatting.silentDisplay());
 		}
 		String track, trackId, trackNamespace;
 		MessagesConfig.Formatting.TrackDisplay trackDisplay = formatting.trackDisplay();
