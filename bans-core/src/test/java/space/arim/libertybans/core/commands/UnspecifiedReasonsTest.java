@@ -72,16 +72,18 @@ public class UnspecifiedReasonsTest {
 	private final TabCompletion tabCompletion;
 	private final AdditionsSection.BanAddition section;
 	private final ReasonsConfig reasonsConfig;
+	private final MessagesConfig messagesConfig;
 	private PunishCommands punishCommands;
 
 	public UnspecifiedReasonsTest(@Mock PunishmentDrafter drafter, @Mock InternalFormatter formatter,
 								  @Mock TabCompletion tabCompletion, @Mock AdditionsSection.BanAddition section,
-								  @Mock ReasonsConfig reasonsConfig) {
+								  @Mock ReasonsConfig reasonsConfig, @Mock MessagesConfig messagesConfig) {
 		this.drafter = drafter;
 		this.formatter = formatter;
 		this.tabCompletion = tabCompletion;
 		this.section = section;
 		this.reasonsConfig = reasonsConfig;
+		this.messagesConfig = messagesConfig;
 	}
 
 	@BeforeEach
@@ -120,7 +122,8 @@ public class UnspecifiedReasonsTest {
 						dependencies.futuresFactory,
 						new FireEventWithTimeout(new DefaultOmnibus()),
 						formatter,
-						new Exemption(dependencies.futuresFactory, Set.of())
+						new Exemption(dependencies.futuresFactory, Set.of()),
+						messagesConfig
 				),
 				tabCompletion, envUserResolver
 		);

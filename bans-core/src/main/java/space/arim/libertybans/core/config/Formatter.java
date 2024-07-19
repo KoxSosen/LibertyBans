@@ -36,6 +36,7 @@ import space.arim.libertybans.api.Victim;
 import space.arim.libertybans.api.punish.EscalationTrack;
 import space.arim.libertybans.api.punish.Punishment;
 import space.arim.libertybans.api.scope.ServerScope;
+import space.arim.libertybans.core.commands.extra.NotificationMessage;
 import space.arim.libertybans.core.service.Time;
 import space.arim.libertybans.core.punish.MiscUtil;
 import space.arim.libertybans.core.scope.InternalScopeManager;

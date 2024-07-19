@@ -50,15 +50,17 @@ public final class AdditionAssistant {
 	private final FireEventWithTimeout fireEventWithTimeout;
 	private final InternalFormatter formatter;
 	private final Exemption exemption;
+	private final MessagesConfig messagesConfig;
 
 	@Inject
 	public AdditionAssistant(FactoryOfTheFuture futuresFactory, FireEventWithTimeout fireEventWithTimeout,
-							 InternalFormatter formatter, Exemption exemption) {
+                             InternalFormatter formatter, Exemption exemption, MessagesConfig configs) {
 		this.futuresFactory = futuresFactory;
 		this.fireEventWithTimeout = fireEventWithTimeout;
 		this.formatter = formatter;
 		this.exemption = exemption;
-	}
+		this.messagesConfig = configs;
+    }
 
 	public interface Client<S extends DraftSanction, I> {
 
@@ -180,14 +182,17 @@ public final class AdditionAssistant {
 
 		private CentralisedFuture<Void> enforceAndSendSuccess(Punishment punishment, String targetArg,
 															  NotificationMessage notificationMessage) {
-			if (!notificationMessage.isSilent()) {
+
+			if (notificationMessage.isSilent()) {
+				section.successNotification().replaceText("%SILENT%", messagesConfig.formatting().silentDisplay());
+			} else {
 				section.successNotification().replaceText("%SILENT%", "");
 			}
 
 			EnforcementOptions enforcementOptions = EnforcementOpts
 					.builder()
 					.enforcement(EnforcementOptions.Enforcement.GLOBAL)
-					.broadcasting(notificationMessage.isSilent() ?
+					.broadcasting(notificationMessage.	isSilent() ?
 							EnforcementOptions.Broadcasting.SILENT : EnforcementOptions.Broadcasting.NORMAL
 					)
 					.targetArgument(targetArg)

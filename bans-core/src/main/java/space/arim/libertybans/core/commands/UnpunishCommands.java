@@ -21,7 +21,6 @@ package space.arim.libertybans.core.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import space.arim.api.jsonchat.adventure.util.ComponentText;
 import space.arim.libertybans.api.CompositeVictim;
 import space.arim.libertybans.api.PunishmentType;
 import space.arim.libertybans.api.Victim;
@@ -31,6 +30,8 @@ import space.arim.libertybans.api.punish.PunishmentRevoker;
 import space.arim.libertybans.api.punish.RevocationOrder;
 import space.arim.libertybans.core.commands.extra.AsCompositeWildcard;
 import space.arim.libertybans.core.commands.extra.NotificationMessage;
+import space.arim.libertybans.core.config.Configs;
+import space.arim.libertybans.core.config.MessagesConfig;
 import space.arim.libertybans.core.punish.permission.VictimPermissionCheck;
 import space.arim.libertybans.core.punish.permission.VictimTypeCheck;
 import space.arim.libertybans.core.commands.extra.TabCompletion;
@@ -58,6 +59,7 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 	private final PunishmentRevoker revoker;
 	private final InternalFormatter formatter;
 	private final TabCompletion tabCompletion;
+	private final MessagesConfig messagesConfig;
 
 	UnpunishCommands(Dependencies dependencies, Stream<String> subCommands,
 					 PunishmentRevoker revoker, InternalFormatter formatter,
@@ -66,7 +68,8 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 		this.revoker = revoker;
 		this.formatter = formatter;
 		this.tabCompletion = tabCompletion;
-	}
+        this.messagesConfig = dependencies.configs.getMessagesConfig();
+    }
 
 	@Override
 	public final CommandExecution execute(CmdSender sender, CommandPackage command, String arg) {
@@ -204,7 +207,9 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 		private CentralisedFuture<Void> sendSuccess(Punishment punishment, String targetArg) {
 
 			notificationMessage.evaluate(command()); // Evaluate -s
-			if (!notificationMessage.isSilent()) {
+			if (notificationMessage.isSilent()) {
+				section.successNotification().replaceText("%SILENT%", messagesConfig.formatting().silentDisplay());
+			} else {
 				section.successNotification().replaceText("%SILENT%", "");
 			}
 
