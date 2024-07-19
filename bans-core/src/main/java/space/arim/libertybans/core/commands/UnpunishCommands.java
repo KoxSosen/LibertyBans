@@ -219,7 +219,7 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 					.toCompletableFuture();
 
 			ComponentText successMessage = section.successMessage().replaceText("%TARGET%", targetArg);
-			if (notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
+			if (!notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
 			CentralisedFuture<Component> futureMessage = formatter.formatWithPunishment(
 					successMessage, punishment);
 

@@ -194,7 +194,7 @@ public final class AdditionAssistant {
 					.toCompletableFuture();
 
 			ComponentText successMessage = section.successMessage().replaceText("%TARGET%", targetArg);
-			if (notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
+			if (!notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
 			CentralisedFuture<Component> futureMessage = formatter.formatWithPunishment(
 					successMessage, punishment);
 
