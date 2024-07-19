@@ -204,6 +204,9 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 		private CentralisedFuture<Void> sendSuccess(Punishment punishment, String targetArg) {
 
 			notificationMessage.evaluate(command()); // Evaluate -s
+			if (!notificationMessage.isSilent()) {
+				section.successNotification().replaceText("%SILENT%", "");
+			}
 
 			EnforcementOptions enforcementOptions = EnforcementOpts
 					.builder()
@@ -218,10 +221,8 @@ abstract class UnpunishCommands extends AbstractSubCommandGroup implements Punis
 					.unenforcePunishment(enforcementOptions)
 					.toCompletableFuture();
 
-			ComponentText successMessage = section.successMessage().replaceText("%TARGET%", targetArg);
-			if (!notificationMessage.isSilent()) successMessage.replaceText("%SILENT%", "");
 			CentralisedFuture<Component> futureMessage = formatter.formatWithPunishment(
-					successMessage, punishment);
+					section.successMessage().replaceText("%TARGET%", targetArg), punishment);
 
 			return futuresFactory().allOf(unenforcement, futureMessage).thenCompose((ignore) -> {
 				return fireWithTimeout(new PostPardonEventImpl(sender().getOperator(), punishment, targetArg));
